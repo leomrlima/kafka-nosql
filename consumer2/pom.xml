@@ -1,0 +1,105 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>leomrlima</groupId>
+		<artifactId>kafka-nosql</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>consumer2</artifactId>
+	<name>Kafka and NoSQL Demo - Consumer, Take 2</name>
+	<packaging>war</packaging>
+
+	<properties>
+		<jakarta.nosql.version>0.1.0-SNAPSHOT</jakarta.nosql.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId> leomrlima </groupId>
+			<artifactId>common</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse</groupId>
+			<artifactId>yasson</artifactId>
+			<version>1.0.4</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>jaxrs</artifactId>
+			<version>2.4.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>io.thorntail</groupId>
+			<artifactId>cdi</artifactId>
+			<version>2.4.0.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aerogear.kafka</groupId>
+			<artifactId>kafka-cdi-extension</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<!--mapper dependency -->
+		<dependency>
+			<groupId>org.eclipse.jnosql.artemis</groupId>
+			<artifactId>artemis-key-value</artifactId>
+			<version>${jakarta.nosql.version}</version>
+		</dependency>
+		<!--drivers -->
+		<dependency>
+			<groupId>org.eclipse.jnosql..diana</groupId>
+			<artifactId>redis-driver</artifactId>
+			<version>${jakarta.nosql.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>consumer</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+			<!-- Use Java 8 -->
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>io.thorntail</groupId>
+				<artifactId>thorntail-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>package</id>
+						<goals>
+							<goal>package</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>oss.sonatype.org-snapshot</id>
+			<url>http://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

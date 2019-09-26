@@ -1,0 +1,57 @@
+version:  '3.2'
+services:
+  zookeeper:
+    image: "confluent/zookeeper"
+    ports:
+      - 2181:2181
+
+  kafka:
+    image: "confluent/kafka"
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_PORT=9092
+    depends_on:
+      - zookeeper
+
+  key-value:
+    image: "redis"
+    ports:
+      - 6379:6379
+      
+  consumer:
+    build: ./consumer
+    depends_on:
+      - key-value
+      - kafka
+    environment:
+      - CONSUMER_NAME=consumer-1
+      - CONSUMER_GROUP=consumer
+      - REDIS_BROKERS=redis://key-value:6379
+    ports:
+      - 4567:4567
+
+  producer:
+    build: ./producer
+    ports:
+      - 8982:8982
+    depends_on:
+      - key-value
+      - kafka
+    environment:
+      - PRODUCER_NAME=producer-1
+
+  consumer2:
+    build: ./consumer2
+    depends_on:
+      - key-value
+      - kafka
+    environment:
+      - CONSUMER_NAME=consumer-2
+      - CONSUMER_GROUP=consumer2
+      - REDIS_BROKERS=redis://key-value:6379
+    ports:
+      - 8080:8080
+
